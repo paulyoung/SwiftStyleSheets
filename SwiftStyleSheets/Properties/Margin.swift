@@ -17,10 +17,10 @@ public struct Margin: Property {
 
         public var description: String {
             switch self {
-            case let Top(value): return value.string
-            case let Right(value): return value.string
-            case let Bottom(value): return value.string
-            case let Left(value): return value.string
+            case let Top(value): return value.description
+            case let Right(value): return value.description
+            case let Bottom(value): return value.description
+            case let Left(value): return value.description
             }
         }
     }

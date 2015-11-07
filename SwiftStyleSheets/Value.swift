@@ -3,8 +3,10 @@ public enum Value {
     case Auto
     case Inherit
     case Length(Float, SwiftStyleSheets.Length)
-    
-    var string: String {
+}
+
+extension Value: CustomStringConvertible {
+    public var description: String {
         switch self {
         case Auto: return "auto"
         case Inherit: return "inherit"
