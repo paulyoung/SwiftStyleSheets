@@ -1,12 +1,12 @@
 /// Margin property.
 public struct Margin: Property {
-    public enum Component {
+    public enum MarginComponent: Component {
         case Top(Value)
         case Right(Value)
         case Bottom(Value)
         case Left(Value)
-        
-        var name: String {
+
+        public var name: String {
             switch self {
             case Top: return "top"
             case Right: return "right"
@@ -14,8 +14,8 @@ public struct Margin: Property {
             case Left: return "left"
             }
         }
-        
-        var string: String {
+
+        public var description: String {
             switch self {
             case let Top(value): return value.string
             case let Right(value): return value.string
@@ -25,43 +25,23 @@ public struct Margin: Property {
         }
     }
     
-    let name = "margin"
-    let components: [Component]
+    public let name = "margin"
+    public let components: [Component]
     
-    public func string(indentation: Int = 0) -> String {
-        let indent = Array(count: indentation, repeatedValue: " ").joinWithSeparator("")
-        
-        // TODO: when all components are equal, convert to shorthand.
-        
-        if components.count == 0 {
-            return "\(indent)\(name): 0;"
-        } else {
-            return components.map { component in
-                return "\(indent)\(name)-\(component.name): \(component.string);"
-                }.joinWithSeparator("\n")
+    public init(top: Value? = nil, right: Value? = nil, bottom: Value? = nil, left: Value? = nil) {
+        self.components = [
+            top.map(MarginComponent.Top),
+            right.map(MarginComponent.Right),
+            bottom.map(MarginComponent.Bottom),
+            left.map(MarginComponent.Left),
+        ]
+        .reduce([]) { accumulator, value in
+            guard let component = value else { return accumulator }
+            return accumulator + [ component ]
         }
     }
     
-    public init(_ components: [Component]) {
-        self.components = components
-    }
-    
-    public init(_ component: Component) {
-        self.init([component])
-    }
-    
-    public init(_ value: Value) {
-        self.init([ .Top(value), .Right(value), .Bottom(value), .Left(value) ])
-    }
-    
-    public init(top: Value? = nil, right: Value? = nil, bottom: Value? = nil, left: Value? = nil) {
-        var components = [Component]()
-        
-        if let top = top { components.append(.Top(top)) }
-        if let right = right { components.append(.Right(right)) }
-        if let bottom = bottom { components.append(.Bottom(bottom)) }
-        if let left = left { components.append(.Left(left)) }
-        
-        self.init(components)
+    public init(_ value: Value = .Length(0, .Rem)) {
+        self.init(top: value, right: value, bottom: value, left: value)
     }
 }

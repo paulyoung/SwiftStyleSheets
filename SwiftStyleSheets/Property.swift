@@ -1,17 +1,13 @@
 /// A property.
-public protocol Property: Indentable {
-    func string(indentation: Int) -> String
+public protocol Property: CustomStringConvertible {
+    var name: String { get }
+    var components: [Component] { get }
 }
 
-/// A type-erased property.
-public struct AnyProperty: Property {
-    private let _string: (Int) -> String
-    
-    public init(_ property: Property) {
-        self._string = property.string
-    }
-    
-    public func string(indentation: Int = 0) -> String {
-        return _string(indentation)
+extension Property {
+    public var description: String {
+        return components.map { component in
+            return "\(name)-\(component.name): \(component.description);"
+        }.joinWithSeparator(" ")
     }
 }

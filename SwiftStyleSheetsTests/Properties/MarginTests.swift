@@ -3,20 +3,16 @@ import SwiftStyleSheets
 
 class MarginTests: XCTestCase {
     func testMargin() {
-        let margin = Margin()
-        let marginTop = Margin(.Top(.Auto))
-        let marginRight = Margin(.Right(.Inherit))
-        let marginBottom = Margin(.Bottom(.Length(3.14, .Px)))
+        let marginTop = Margin(top: .Auto)
+        let marginRight = Margin(right: .Inherit)
+        let marginBottom = Margin(bottom: .Length(3.14, .Px))
         
-        let horizontalMargin = Margin([
-            .Left(.Length(10, .Px)),
-            .Right(.Length(10, .Px))
-        ])
+        let horizontalMarginLength: Value = .Length(10, .Px)
+        let horizontalMargin = Margin(right: horizontalMarginLength, left: horizontalMarginLength)
         
-        XCTAssertEqual("margin: 0;", margin.string())
-        XCTAssertEqual("margin-top: auto;", marginTop.string())
-        XCTAssertEqual("margin-right: inherit;", marginRight.string())
-        XCTAssertEqual("margin-bottom: 3.14px;", marginBottom.string())
-        XCTAssertEqual("margin-left: 10px;\nmargin-right: 10px;", horizontalMargin.string())
+        XCTAssertEqual("margin-top: auto;", marginTop.description)
+        XCTAssertEqual("margin-right: inherit;", marginRight.description)
+        XCTAssertEqual("margin-bottom: 3.14px;", marginBottom.description)
+        XCTAssertEqual("margin-right: 10px; margin-left: 10px;", horizontalMargin.description)
     }
 }

@@ -3,7 +3,7 @@ import SwiftStyleSheets
 
 class RuleSetTests: XCTestCase {
     func testRuleSet() {
-        let ruleSet = RuleSet(.ID("main"), Margin(.Top(.Length(10, .Px))))
-        XCTAssertEqual("#main {\n  margin-top: 10px;\n}", ruleSet.string())
+        let ruleSet = RuleSet("#main") { Margin(top: .Length(10, .Px)) }
+        XCTAssertEqual("#main { margin-top: 10px; }", ruleSet.description)
     }
 }

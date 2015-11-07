@@ -5,19 +5,15 @@ class StyleSheetTests: XCTestCase {
     func testStyleSheet() {
         let margin: Value = .Length(10, .Px)
         
-        let header = RuleSet(.Tag("header"), [
-            AnyProperty(Margin(bottom: margin))
-        ])
+        let styleSheet = StyleSheet {[
+            RuleSet("header") {[
+                Margin(bottom: margin)
+            ]},
+            RuleSet("footer") {[
+                Margin(top: margin)
+            ]},
+        ]}
         
-        let footer = RuleSet(.Tag("footer"), [
-            AnyProperty(Margin(top: margin))
-        ])
-        
-        let styleSheet = StyleSheet([
-            header,
-            footer
-        ])
-        
-        XCTAssertEqual("header {\n  margin-bottom: 10px;\n}\n\nfooter {\n  margin-top: 10px;\n}\n", styleSheet.string)
+        XCTAssertEqual("header { margin-bottom: 10px; }\nfooter { margin-top: 10px; }\n", styleSheet.description)
     }
 }

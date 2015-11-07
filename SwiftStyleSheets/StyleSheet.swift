@@ -2,15 +2,19 @@
 public struct StyleSheet {
     let ruleSets: [RuleSet]
     
-    public init(_ ruleSets: [RuleSet]) {
-        self.ruleSets = ruleSets
+    public init(ruleSets: () -> [RuleSet]) {
+        self.ruleSets = ruleSets()
     }
     
-    public init(_ ruleSet: RuleSet) {
-        self.init([ruleSet])
+    public init(ruleSet: () -> RuleSet) {
+        self.init {[
+            ruleSet()
+        ]}
     }
-    
-    public var string: String {
-        return ruleSets.map({ $0.string() }).joinWithSeparator("\n\n") + "\n"
+}
+
+extension StyleSheet: CustomStringConvertible {
+    public var description: String {
+        return ruleSets.map({ $0.description }).joinWithSeparator("\n") + "\n"
     }
 }
